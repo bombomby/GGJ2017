@@ -9,7 +9,7 @@ namespace Assets.Waves.Generator.instances
     {
         public override double InternalFunction(double x)
         {
-            return Math.Cos(x / 4);
+            return (float)(Math.Cos(x / 4));
         }
     }
 }

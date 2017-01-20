@@ -10,12 +10,12 @@ namespace Assets.Waves.Generator
         public Base() {
         }
         
-        public double Function(double input)
+        public float Function(float input)
         {
             return InternalFunction(input);
         }
 
-        virtual public double InternalFunction(double x) { return x; }
+        virtual public float InternalFunction(float x) { return x; }
     }
 
 }
