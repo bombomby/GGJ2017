@@ -7,7 +7,7 @@ namespace Assets.Waves.Generator.instances
 {
     public class Wave_003 : Assets.Waves.Generator.Base
     {
-        public override double InternalFunction(double x)
+        public override float InternalFunction(float x)
         {
             return (float)(Math.Cos(x / 4));
         }

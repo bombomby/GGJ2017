@@ -6,17 +6,17 @@ public class WaveGenerator : MonoBehaviour {
 
     float WaveFunction(float x)
     {
-        return 300.0f * Mathf.Sin(Mathf.PI * x / 180);
+        return Mathf.Sin(20.0f * Mathf.PI * x);
     }
 
-
-    Vector2[] GenerateWaves(int count)
+    Vector2[] GenerateWaves(int count, Vector2 scale)
     {
         Vector2[] waves = new Vector2[count];
 
         for (int i = 0; i < count; ++i)
         {
-            waves[i] = new Vector2(i - count / 2, WaveFunction(i));
+            float x = (float)i / count;
+            waves[i] = new Vector2(scale.x * x, scale.y * WaveFunction(x));
         }
 
         return waves;
@@ -24,11 +24,13 @@ public class WaveGenerator : MonoBehaviour {
 
     EdgeCollider2D waveCollider;
 
+    public Vector2 WaveScale = new Vector2(1, 1);
+
     // Use this for initialization
-    void Start () {
-        int width = (int)transform.localScale.x;
+    void Awake () {
+        int count = 2048;
         waveCollider = GetComponent<EdgeCollider2D>();
-        waveCollider.points = GenerateWaves(width);
+        waveCollider.points = GenerateWaves(count, WaveScale);
     }
 	
 	// Update is called once per frame
