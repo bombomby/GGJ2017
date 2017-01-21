@@ -46,6 +46,6 @@ public class CloudInstance : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-       transform.position = transform.position + new Vector3( Time.deltaTime, 0.0f) * Speed;
+       transform.position = transform.position - new Vector3( Time.deltaTime, 0.0f) * Speed;
     }
 }
