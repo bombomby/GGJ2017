@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace Assets
 {
@@ -26,6 +27,11 @@ namespace Assets
         {
             return (float)(System.Math.Cos(2 * System.Math.PI * x) - 1.0f);
         }
+
+        public static Func<float, float> StandardWave = x =>
+        {
+            return Mathf.Sin(x * Mathf.PI) / 10.0f;
+        };
 
 
         public List<Func<float, float>> Waves;

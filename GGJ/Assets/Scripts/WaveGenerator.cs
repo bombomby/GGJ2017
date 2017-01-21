@@ -14,9 +14,9 @@ public class WaveGenerator : MonoBehaviour {
 
     List<WaveItem> waves = new List<WaveItem>();
 
-    public void AddWave(Func<float, float> wave)
+    public void AddWave(Func<float, float> wave, float phase = 0.0f)
     {
-        waves.Add(new WaveItem() { Function = wave });
+        waves.Add(new WaveItem() { Function = wave, X = phase });
     }
 
     float WaveFunction(float x)
@@ -38,6 +38,8 @@ public class WaveGenerator : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         waveCollider = GetComponent<EdgeCollider2D>();
+        AddWave(WaveCollection.StandardWave, -1000.0f);
+        points.Add(new Vector2(10.0f, 0.0f));
 
         //AddWave(WaveCollection.Waves[0]);
 
