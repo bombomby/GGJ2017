@@ -9,6 +9,8 @@ public class WaveMeshGenerator: MonoBehaviour
 	public EdgeCollider2D m_BakedEdgeCollider = null;
 	public float m_minDepth = -50.0f;
 
+    public Vector2 UVScale = new Vector2(1, 1);
+
 	//Initialisation:
 	private void Update()
 	{
@@ -21,7 +23,10 @@ public class WaveMeshGenerator: MonoBehaviour
 
 			meshBuilder.Vertices.Add(new Vector3(edgePoint.x, m_minDepth, 0.0f));
 			meshBuilder.Vertices.Add(new Vector3(edgePoint.x, edgePoint.y, 0.0f));
-		}
+
+            meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, 0.0f));
+            meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, /*(edgePoint.y - m_minDepth)*/ 1.0f * UVScale.y));
+        }
 
 		for (int pointIdx = 0; pointIdx < (m_BakedEdgeCollider.pointCount*2)-2; pointIdx+=2)
 		{
