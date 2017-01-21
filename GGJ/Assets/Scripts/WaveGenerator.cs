@@ -50,7 +50,7 @@ public class WaveGenerator : MonoBehaviour {
     // Use this for initialization
     void Awake () { 
         waveCollider = GetComponent<EdgeCollider2D>();
-        points.Add(new Vector2(30.0f, 0.0f));
+        points.Add(new Vector2(60.0f, 0.0f));
     }
 
     public float Height = 0.0f;
