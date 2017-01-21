@@ -75,6 +75,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\BrickGenerator.cs" />
+    <Compile Include="Assets\Scripts\BuoyancyAdapter.cs" />
+    <Compile Include="Assets\Scripts\CloudGenerator.cs" />
+    <Compile Include="Assets\Scripts\CloudInstance.cs" />
     <Compile Include="Assets\Scripts\MeshBuilder.cs" />
     <Compile Include="Assets\Scripts\WaveCollection.cs" />
     <Compile Include="Assets\Scripts\WaveGenerator.cs" />
