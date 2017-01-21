@@ -30,7 +30,7 @@ namespace Assets
 
         public static Func<float, float> StandardWave = x =>
         {
-            return Mathf.Sin(x * Mathf.PI) / 10.0f;
+            return Mathf.Sin(x * 3.0f * Mathf.PI) / 5.0f;
         };
 
 

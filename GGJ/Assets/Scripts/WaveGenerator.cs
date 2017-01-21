@@ -10,9 +10,17 @@ public class WaveGenerator : MonoBehaviour {
     {
         public Func<float, float> Function;
         public float X = 0.0f;
+
+        public float Update(float step)
+        {
+            X += step;
+            return Function(X);
+        }
     }
 
     List<WaveItem> waves = new List<WaveItem>();
+
+    public Vector2 Margin = new Vector2(-4.0f, 4.0f);
 
     public void AddWave(Func<float, float> wave, float phase = 0.0f)
     {
@@ -33,13 +41,14 @@ public class WaveGenerator : MonoBehaviour {
 
     WaveCollection WaveCollection = new WaveCollection();
 
+    WaveItem ambientWave = new WaveItem() { Function = WaveCollection.StandardWave, X = -2000.0f };
+
     public int MaxPoints = 256;
 	public List<Vector2> Points;
 
     // Use this for initialization
     void Awake () {
         waveCollider = GetComponent<EdgeCollider2D>();
-        AddWave(WaveCollection.StandardWave, -1000.0f);
         points.Add(new Vector2(30.0f, 0.0f));
     }
 
@@ -55,19 +64,20 @@ public class WaveGenerator : MonoBehaviour {
 
         waves.ForEach(wave =>
         {
-            wave.X += step;
+            value += wave.Update(step);
 
             if (wave.X > 1.0f)
             {
                 toRemove.Add(wave);
             }
-            else
-            {
-                value += wave.Function(wave.X);
-            }
         });
 
         toRemove.ForEach(wave => waves.Remove(wave));
+
+        value = Mathf.Clamp(value, Margin.x, Margin.y);
+
+        value += ambientWave.Update(step);
+
 
         Height = value * WaveScale.y;
         Length += time * Speed;
