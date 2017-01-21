@@ -1,32 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class WaveGenerator : MonoBehaviour {
 
+    class WaveItem
+    {
+        public Func<float, float> Function;
+        public float X = 0.0f;
+    }
+
+    List<WaveItem> waves = new List<WaveItem>();
+
+    public void AddWave(Func<float, float> wave)
+    {
+        waves.Add(new WaveItem() { Function = wave });
+    }
+
     float WaveFunction(float x)
     {
         return Mathf.Sin(20.0f * Mathf.PI * x);
-    }
-    
-    float WaveFunction_001(float x)
-    {
-        return (float)(-System.Math.Cos(3 * x * System.Math.PI) * System.Math.Sin(x * System.Math.PI));
-    }
-
-    float WaveFunction_002(float x)
-    {
-        return (float)(System.Math.Sin(System.Math.PI * x * 10) * System.Math.Sin(x * System.Math.PI) * System.Math.Sin(System.Math.PI * (x - 1.0)));
-    }
-
-    float WaveFunction_003(float x)
-    {
-        return (float)(System.Math.Sin(x * System.Math.PI) / 7);
-    }
-
-    float WaveFunction_004(float x)
-    {
-        return (float)(System.Math.Cos(2 * System.Math.PI * x));
     }
 
     Vector2[] GenerateWaves(int count, Vector2 scale)
@@ -45,17 +39,43 @@ public class WaveGenerator : MonoBehaviour {
     EdgeCollider2D waveCollider;
 
     public Vector2 WaveScale = new Vector2(1, 1);
+    public float Speed = 1.0f;
+
+    List<Vector2> points = new List<Vector2>();
 
     // Use this for initialization
     void Awake () {
-        int count = 2048;
         waveCollider = GetComponent<EdgeCollider2D>();
-        waveCollider.points = GenerateWaves(count, WaveScale);
+        //waveCollider.points = GenerateWaves(1024, WaveScale);
     }
-	
+
+    public float Height = 0.0f;
+    public float Length = 0.0f;
+
+    void UpdateWave(float step)
+    {
+        float value = 0.0f;
+
+        waves.ForEach(wave =>
+        {
+            wave.X += step;
+            value += wave.Function(wave.X);
+        });
+
+        Height += value;
+    }
+
+
+
+
 	// Update is called once per frame
-	void Update () {
-        Debug.Log(waveCollider.pointCount.ToString());
-     
-	}
+	void FixedUpdate () {
+        UpdateWave(Time.deltaTime);
+        Length += Time.deltaTime;
+
+        points.Add(new Vector2(-Length, Height));
+        waveCollider.points = points.ToArray();
+
+        transform.position = transform.position + new Vector3(Time.deltaTime * Speed, 0.0f, 0.0f);
+    }
 }
