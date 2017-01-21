@@ -4,30 +4,82 @@ using UnityEngine;
 
 public class BrickGenerator : MonoBehaviour {
 
-
+    // exposed parameters
     public GameObject Prefab_001;
     public GameObject Prefab_002;
     public GameObject Prefab_003;
     public GameObject Prefab_004;
+    public GameObject AudioGeneratorObject;
+    public float BrickLiveTimeInSecs = 5.0f;
 
-    public IList<GameObject> Prefabs;
-    public IList<GameObject> Cubes;
-    public float YOffset;
+    // private parameters
+    private IDictionary<GameObject, float> LifeTimePerCube;
+    private IDictionary<GameObject, int> IndexPerCube;
+
 
     // Use this for initialization
     void Start () {
-        Prefabs = new List<GameObject>();
-        Cubes = new List<GameObject>();
+        LifeTimePerCube = new Dictionary<GameObject, float>();
+        IndexPerCube = new Dictionary<GameObject, int>();
     }
 	
 	// Update is called once per frame
 	void Update () {
-	}
+
+        // check what needs to be destroyd
+        List<GameObject> destroyList = new List<GameObject>();
+        foreach(var current in LifeTimePerCube)
+        {
+            if (Time.time > current.Value)
+            {
+                destroyList.Add(current.Key);
+            }
+        }
+
+        // destroy stuff
+        foreach (var obj in destroyList)
+        {
+            LifeTimePerCube.Remove(obj);
+            IndexPerCube.Remove(obj);
+            Destroy(obj);
+        }
+
+        // update positions
+        for(int child=0; child<transform.childCount; child++)
+        {
+            transform.GetChild(child).transform.position = new Vector3(transform.position.x, transform.position.y + child, transform.position.z);
+        }
+
+        // update audio
+        // deal with audo sources
+        if (AudioGeneratorObject != null)
+        {
+            AudioManager ag = AudioGeneratorObject.GetComponent<AudioManager>();
+            if (ag != null)
+            {
+                // end all loops
+                ag.Loops(false);
+
+                IList<int> actives = new List<int>();
+                for (int child = 0; child < transform.childCount && child < 4; child++)
+                {
+                    GameObject obj = transform.GetChild(child).gameObject;
+                    if(obj!=null)
+                    {
+                        ag.ActivateAudio(IndexPerCube[obj], true);
+                        actives.Add(IndexPerCube[obj]);
+                    }
+                }
+
+                ag.DesacActivateAllBut(actives);
+            }
+        }
+    }
 
     public void Generate(int index)
     {
         GameObject cube = null;
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y + Cubes.Count, transform.position.z);
+        Vector3 pos = new Vector3(transform.position.x, transform.position.y + transform.childCount, transform.position.z);
         switch (index)
         {
             case 0:
@@ -53,27 +105,10 @@ public class BrickGenerator : MonoBehaviour {
             cube.transform.position = pos;
         }
 
-        Cubes.Add(cube);
+        cube.transform.SetParent(transform);
 
-        /*
-        GameObject cube = null;
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y + Cubes.Count, transform.position.z);
-
-        if (index < Prefabs.Count)
-        {
-            cube = Instantiate(Prefabs[index], pos, Quaternion.identity);
-        }
-        else
-        {
-            cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = pos;
-        }
-
-        if(cube != null)
-        {
-           
-            Cubes.Add(cube);
-        }
-        */
+        // same data in dictionaries
+        LifeTimePerCube.Add(cube, Time.realtimeSinceStartup + BrickLiveTimeInSecs);
+        IndexPerCube.Add(cube, index);
     }
 }

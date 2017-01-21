@@ -39,7 +39,7 @@ public class CloudInstance : MonoBehaviour {
             Speed = Random.Range(MinMediumSpeed, MaxMediumSpeed);
             sr.sortingOrder = -3;
         }
-        
+
         // destroy after 10 seconds
         Destroy(gameObject, LifeTime);
     }

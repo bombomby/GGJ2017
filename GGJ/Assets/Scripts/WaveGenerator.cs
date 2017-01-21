@@ -105,7 +105,6 @@ public class WaveGenerator : MonoBehaviour {
                 bg.Generate(index);
             }
         }
-
     }
 
 	// Update is called once per frame
