@@ -6,7 +6,7 @@ using System.Collections;
 /// </summary>
 public class WaveMeshGenerator: MonoBehaviour
 {
-	public EdgeCollider2D m_BakedEdgeCollider = null;
+	public WaveGenerator m_waveGenerator;
 	public float m_minDepth = -50.0f;
 
     public Vector2 UVScale = new Vector2(1, 1);
@@ -17,16 +17,15 @@ public class WaveMeshGenerator: MonoBehaviour
 		//Create a new mesh builder:
 		MeshBuilder meshBuilder = new MeshBuilder();
 
-		for (int pointIdx = 0; pointIdx < m_BakedEdgeCollider.pointCount; ++pointIdx)
+		for (int pointIdx = 0; pointIdx < m_waveGenerator.Points.Count; ++pointIdx)
 		{
-			Vector2 edgePoint = m_BakedEdgeCollider.points[pointIdx];
+			Vector2 edgePoint = m_waveGenerator.Points[pointIdx];
 
 			meshBuilder.Vertices.Add(new Vector3(edgePoint.x, m_minDepth, 0.0f));
 			meshBuilder.Vertices.Add(new Vector3(edgePoint.x, edgePoint.y, 0.0f));
 
-            meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, 0.0f));
-            meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, /*(edgePoint.y - m_minDepth)*/ 1.0f * UVScale.y));
-
+			meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, 0.0f));
+            meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, /*(edgePoint.y - m_minDepth)*/ 1.0f * UVScale.y))
             meshBuilder.Normals.Add(Vector3.back);
             meshBuilder.Normals.Add(Vector3.back);
         }
