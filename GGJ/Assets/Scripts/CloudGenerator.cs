@@ -73,5 +73,7 @@ public class CloudGenerator : MonoBehaviour {
         Transform cloud = Instantiate(CloudTransform, pos, Quaternion.identity);
         float scale = Random.Range(CloudInstance.MinScale, CloudInstance.MaxScale);
         cloud.localScale = new Vector3(cloud.localScale.x * scale, cloud.localScale.y * scale, cloud.localScale.z);
+
+        cloud.SetParent(transform);
     }
 }
