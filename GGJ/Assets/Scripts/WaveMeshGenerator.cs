@@ -10,7 +10,7 @@ public class WaveMeshGenerator: MonoBehaviour
 	public float m_minDepth = -50.0f;
 
 	//Initialisation:
-	private void Start()
+	private void Update()
 	{
 		//Create a new mesh builder:
 		MeshBuilder meshBuilder = new MeshBuilder();
@@ -25,8 +25,8 @@ public class WaveMeshGenerator: MonoBehaviour
 
 		for (int pointIdx = 0; pointIdx < (m_BakedEdgeCollider.pointCount*2)-2; pointIdx+=2)
 		{
-			meshBuilder.AddTriangle(pointIdx, pointIdx + 1, pointIdx + 3);
-			meshBuilder.AddTriangle(pointIdx, pointIdx + 3, pointIdx + 2);
+			meshBuilder.AddTriangle(pointIdx, pointIdx + 3, pointIdx + 1);
+			meshBuilder.AddTriangle(pointIdx, pointIdx + 2, pointIdx + 3);
 		}
 
 		//Create the mesh:
