@@ -33,6 +33,8 @@ public class WaveGenerator : MonoBehaviour {
 
     WaveCollection WaveCollection = new WaveCollection();
 
+    public int MaxPoints = 256;
+
     // Use this for initialization
     void Awake () {
         waveCollider = GetComponent<EdgeCollider2D>();
@@ -74,6 +76,9 @@ public class WaveGenerator : MonoBehaviour {
 
         Height = value * WaveScale.y;
         Length += time * Speed;
+
+        if (points.Count > MaxPoints)
+            points.RemoveAt(0);
 
         points.Add(new Vector2(-Length, Height));
     }
