@@ -40,6 +40,7 @@ public class WaveGenerator : MonoBehaviour {
     List<Vector2> points = new List<Vector2>();
 
     WaveCollection WaveCollection = new WaveCollection();
+    public GameObject BrickGenerator;
 
     WaveItem ambientWave = new WaveItem() { Function = WaveCollection.StandardWave, X = -2000.0f };
 
@@ -47,7 +48,7 @@ public class WaveGenerator : MonoBehaviour {
 	public List<Vector2> Points;
 
     // Use this for initialization
-    void Awake () {
+    void Awake () { 
         waveCollider = GetComponent<EdgeCollider2D>();
         points.Add(new Vector2(30.0f, 0.0f));
     }
@@ -92,14 +93,25 @@ public class WaveGenerator : MonoBehaviour {
 
     public void AddWaveButtonClick()
     {
-        Func<float, float> func = WaveCollection.Waves[rand.Next() % WaveCollection.Waves.Count];
+        int index = rand.Next() % WaveCollection.Waves.Count;
+        Func<float, float> func = WaveCollection.Waves[index];
         AddWave(func);
+
+        if(BrickGenerator!=null)
+        {
+            BrickGenerator bg = BrickGenerator.GetComponent<BrickGenerator>();
+            if(bg!=null)
+            {
+                bg.Generate(index);
+            }
+        }
+
     }
 
 	// Update is called once per frame
 	void FixedUpdate () {
         UpdateWaves(Time.deltaTime);
-
+        
 		waveCollider.points = points.ToArray();
 		Points = points;
 
