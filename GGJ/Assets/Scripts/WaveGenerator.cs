@@ -110,11 +110,6 @@ public class WaveGenerator : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-        if (rand.Next() % 10 == 0)
-        {
-            AddWaveButtonClick();
-        }
-
         UpdateWaves(Time.deltaTime);
         
 		waveCollider.points = points.ToArray();
