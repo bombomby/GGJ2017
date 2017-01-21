@@ -10,12 +10,13 @@ public class BrickGenerator : MonoBehaviour {
     public GameObject Prefab_003;
     public GameObject Prefab_004;
     public GameObject AudioGeneratorObject;
+    public GameObject AudioGeneratorObject_version2;
+
     public float BrickLiveTimeInSecs = 5.0f;
 
     // private parameters
     private IDictionary<GameObject, float> LifeTimePerCube;
     private IDictionary<GameObject, int> IndexPerCube;
-
 
     // Use this for initialization
     void Start () {
@@ -25,7 +26,6 @@ public class BrickGenerator : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         // check what needs to be destroyd
         List<GameObject> destroyList = new List<GameObject>();
         foreach(var current in LifeTimePerCube)
@@ -50,6 +50,16 @@ public class BrickGenerator : MonoBehaviour {
             transform.GetChild(child).transform.position = new Vector3(transform.position.x, transform.position.y + child, transform.position.z);
         }
 
+        // trigger destroy of the for bottom cubes
+        for (int child = 0; child < transform.childCount && child < 4 ; child++)
+        {
+            GameObject obj = transform.GetChild(child).gameObject;
+            if(!LifeTimePerCube.ContainsKey(obj))
+            {
+                LifeTimePerCube.Add(obj, Time.realtimeSinceStartup + BrickLiveTimeInSecs);
+            }
+        }
+
         // update audio
         // deal with audo sources
         if (AudioGeneratorObject != null)
@@ -72,6 +82,25 @@ public class BrickGenerator : MonoBehaviour {
                 }
 
                 ag.DesacActivateAllBut(actives);
+            }
+        }
+
+        if(AudioGeneratorObject_version2)
+        {
+            AudioManager_version2 ag = AudioGeneratorObject_version2.GetComponent<AudioManager_version2>();
+            if (ag != null)
+            {
+                IList<int> actives = new List<int>();
+                for (int child = 0; child < transform.childCount && child < 4; child++)
+                {
+                    GameObject obj = transform.GetChild(child).gameObject;
+                    if (obj != null)
+                    {
+                        actives.Add(IndexPerCube[obj]);
+                    }
+                }
+
+                ag.ActivateEffects(actives);
             }
         }
     }
@@ -108,7 +137,6 @@ public class BrickGenerator : MonoBehaviour {
         cube.transform.SetParent(transform);
 
         // same data in dictionaries
-        LifeTimePerCube.Add(cube, Time.realtimeSinceStartup + BrickLiveTimeInSecs);
         IndexPerCube.Add(cube, index);
     }
 }
