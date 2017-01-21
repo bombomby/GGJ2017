@@ -24,7 +24,7 @@ namespace Assets
 
         public float WaveFunction_004(float x)
         {
-            return (float)(System.Math.Cos(2 * System.Math.PI * x));
+            return (float)(System.Math.Cos(2 * System.Math.PI * x) - 1.0f);
         }
 
 
