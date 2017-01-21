@@ -24,7 +24,7 @@ public class WaveGenerator : MonoBehaviour {
         return Mathf.Sin(20.0f * Mathf.PI * x);
     }
 
-    //EdgeCollider2D waveCollider;
+    EdgeCollider2D waveCollider;
 
     public Vector2 WaveScale = new Vector2(1, 1);
     public float Speed = 1.0f;
@@ -38,17 +38,9 @@ public class WaveGenerator : MonoBehaviour {
 
     // Use this for initialization
     void Awake () {
-        //waveCollider = GetComponent<EdgeCollider2D>();
+        waveCollider = GetComponent<EdgeCollider2D>();
         AddWave(WaveCollection.StandardWave, -1000.0f);
         points.Add(new Vector2(10.0f, 0.0f));
-
-        //AddWave(WaveCollection.Waves[0]);
-
-        //for (int i = 0; i < 1024; ++i)
-        //{
-        //    UpdateWave(1 / 60.0f);
-        //}
-        //waveCollider.points = GenerateWaves(1024, WaveScale);
     }
 
     public float Height = 0.0f;
@@ -98,7 +90,7 @@ public class WaveGenerator : MonoBehaviour {
 	void FixedUpdate () {
         UpdateWaves(Time.deltaTime);
 
-		//waveCollider.points = points.ToArray();
+		waveCollider.points = points.ToArray();
 		Points = points;
 
 		transform.position = transform.position + new Vector3(Time.deltaTime * Speed, 0.0f, 0.0f);

@@ -25,12 +25,13 @@ public class WaveMeshGenerator: MonoBehaviour
 			meshBuilder.Vertices.Add(new Vector3(edgePoint.x, edgePoint.y, 0.0f));
 
 			meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, 0.0f));
-            meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, /*(edgePoint.y - m_minDepth)*/ 1.0f * UVScale.y))
+            meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, /*(edgePoint.y - m_minDepth)*/ 1.0f * UVScale.y));
+
             meshBuilder.Normals.Add(Vector3.back);
             meshBuilder.Normals.Add(Vector3.back);
         }
 
-		for (int pointIdx = 0; pointIdx < (m_BakedEdgeCollider.pointCount*2)-2; pointIdx+=2)
+		for (int pointIdx = 0; pointIdx < (m_waveGenerator.Points.Count*2)-2; pointIdx+=2)
 		{
 			meshBuilder.AddTriangle(pointIdx, pointIdx + 3, pointIdx + 1);
 			meshBuilder.AddTriangle(pointIdx, pointIdx + 2, pointIdx + 3);

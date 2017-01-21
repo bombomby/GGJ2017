@@ -10,16 +10,25 @@ public class BuoyancyAdapter : MonoBehaviour
 
 	private BuoyancyEffector2D m_buoyancyEffector;
 
+    public GameObject Boat;
+
 	// Use this for initialization
 	void Start()
 	{
 		m_buoyancyEffector = gameObject.GetComponent<BuoyancyEffector2D>();
 	}
 
+    int waterLayerMask = 1 << 4;
+
 	// Update is called once per frame
 	void Update()
 	{
-		int pointCnt = m_waveGenerator.Points.Count;
-		m_buoyancyEffector.surfaceLevel = m_waveGenerator.Points[pointCnt - 1].y + 10;
-	}
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(Boat.transform.position.x, Boat.transform.position.y + 100.0f), Vector2.down, 200.0f, waterLayerMask);
+        if (hit.collider != null)
+        {
+            m_buoyancyEffector.surfaceLevel = hit.point.y;
+        }
+
+
+    }
 }
