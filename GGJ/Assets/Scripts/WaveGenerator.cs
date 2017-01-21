@@ -40,7 +40,7 @@ public class WaveGenerator : MonoBehaviour {
     void Awake () {
         waveCollider = GetComponent<EdgeCollider2D>();
         AddWave(WaveCollection.StandardWave, -1000.0f);
-        points.Add(new Vector2(10.0f, 0.0f));
+        points.Add(new Vector2(30.0f, 0.0f));
     }
 
     public float Height = 0.0f;

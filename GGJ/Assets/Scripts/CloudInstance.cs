@@ -27,17 +27,17 @@ public class CloudInstance : MonoBehaviour {
         if (transform.localScale.x < scaleInterval/3.0f)
         {
             Speed = Random.Range(MinCloseSpeed, MaxCloseSpeed);
-            sr.sortingOrder = 0;
+            sr.sortingOrder = -2;
         }
         else if (transform.localScale.x > 2.0f * scaleInterval / 3.0f)
         {
             Speed = Random.Range(MinFarSpeed, MaxFarSpeed);
-            sr.sortingOrder = 3;
+            sr.sortingOrder = -4;
         }
         else
         {
             Speed = Random.Range(MinMediumSpeed, MaxMediumSpeed);
-            sr.sortingOrder = 2;
+            sr.sortingOrder = -3;
         }
         
         // destroy after 10 seconds
