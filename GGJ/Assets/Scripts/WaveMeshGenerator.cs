@@ -26,6 +26,9 @@ public class WaveMeshGenerator: MonoBehaviour
 
             meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, 0.0f));
             meshBuilder.UVs.Add(new Vector2(pointIdx * UVScale.x, /*(edgePoint.y - m_minDepth)*/ 1.0f * UVScale.y));
+
+            meshBuilder.Normals.Add(Vector3.back);
+            meshBuilder.Normals.Add(Vector3.back);
         }
 
 		for (int pointIdx = 0; pointIdx < (m_BakedEdgeCollider.pointCount*2)-2; pointIdx+=2)
