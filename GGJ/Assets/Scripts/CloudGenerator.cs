@@ -8,10 +8,8 @@ public class CloudGenerator : MonoBehaviour {
     public float MaxRangeX = 10.0f;
     public float MinRangeY = 3.0f;
     public float MaxRangeY = 5.0f;
-    public float MinRangeZ = -500.0f;
-    public float MaxRangeZ = -100.0f;
 
-    public float NewCloudXOffset = -10.0f;
+    public float NewCloudXOffset = -15.0f;
 
     /// <summary>
     /// Reference to the current boat
@@ -71,25 +69,9 @@ public class CloudGenerator : MonoBehaviour {
 
         pos.x += Random.Range(MinRangeX, MaxRangeX);
         pos.y += Random.Range(MinRangeY, MaxRangeY);
-        pos.z += Random.Range(MinRangeZ, MaxRangeZ);
 
         Transform cloud = Instantiate(CloudTransform, pos, Quaternion.identity);
-
-        float zInternal = MinRangeZ - MaxRangeZ;
-
-        float scale = 1.0f;
-        if (pos.z > MinRangeZ + zInternal/3.0f)
-        {
-            scale = Random.Range(CloudInstance.MinRangeBigScale, CloudInstance.MaxRangeBigScale);
-        }
-        else if (pos.z > MinRangeZ + 2.0f * zInternal/3.0)
-        {
-            scale = Random.Range(CloudInstance.MinRangeMediumScale, CloudInstance.MaxRangeMediumScale);
-        }
-        else
-        {
-            scale = Random.Range(CloudInstance.MinRangeLittleScale, CloudInstance.MaxRangeLittleScale);
-        }
+        float scale = Random.Range(CloudInstance.MinScale, CloudInstance.MaxScale);
         cloud.localScale = new Vector3(cloud.localScale.x * scale, cloud.localScale.y * scale, cloud.localScale.z);
     }
 }

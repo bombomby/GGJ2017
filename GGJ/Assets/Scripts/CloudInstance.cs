@@ -9,31 +9,33 @@ public class CloudInstance : MonoBehaviour {
     public float MinFarSpeed = 3.0f;
     public float MaxFarSpeed = 4.0f;
     public float MinCloseSpeed = 0.5f;
-    public float MaxCloseSpeed = 10.75f;
+    public float MaxCloseSpeed = 1.0f;
     public float MinMediumSpeed = 1.0f;
     public float MaxMediumSpeed = 2.0f;
 
-    public static float MinRangeLittleScale = 0.1f;
-    public static float MaxRangeLittleScale = 0.2f;
-    public static float MinRangeMediumScale = 0.21f;
-    public static float MaxRangeMediumScale = 0.35f;
-    public static float MinRangeBigScale = 0.36f;
-    public static float MaxRangeBigScale = 0.5f;
+    public static float MinScale = 0.1f;
+    public static float MaxScale = 0.5f;
 
     // Use this for initialization
     void Start () {
 
-        if(transform.localScale.x < MinRangeMediumScale)
-        {
-            Speed = Random.Range(MinFarSpeed, MaxFarSpeed);
-        }
-        else if (transform.localScale.x > MaxRangeMediumScale)
+        SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
+
+        float scaleInterval = CloudInstance.MaxScale - CloudInstance.MinScale;
+        if (transform.localScale.x < scaleInterval/3.0f)
         {
             Speed = Random.Range(MinCloseSpeed, MaxCloseSpeed);
+            sr.sortingOrder = 0;
+        }
+        else if (transform.localScale.x > 2.0f * scaleInterval / 3.0f)
+        {
+            Speed = Random.Range(MinFarSpeed, MaxFarSpeed);
+            sr.sortingOrder = 3;
         }
         else
         {
             Speed = Random.Range(MinMediumSpeed, MaxMediumSpeed);
+            sr.sortingOrder = 2;
         }
         
         // destroy after 10 seconds
