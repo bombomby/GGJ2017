@@ -7,7 +7,7 @@ using System.Collections;
 public class WaveMeshGenerator: MonoBehaviour
 {
 	public EdgeCollider2D m_BakedEdgeCollider = null;
-	public float m_minDepth = 50.0f;
+	public float m_minDepth = -50.0f;
 
 	//Initialisation:
 	private void Start()
