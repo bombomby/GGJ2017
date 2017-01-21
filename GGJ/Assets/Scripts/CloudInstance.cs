@@ -5,7 +5,7 @@ using UnityEngine;
 public class CloudInstance : MonoBehaviour {
 
     // speed of the cloud
-    public float Speed = 1.0f;
+    private float Speed;
     public float MinFarSpeed = 3.0f;
     public float MaxFarSpeed = 4.0f;
     public float MinCloseSpeed = 0.5f;
@@ -46,6 +46,6 @@ public class CloudInstance : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-       transform.position = transform.position + new Vector3( Time.deltaTime, 0.0f) * Speed;
+       transform.position = transform.position + new Vector3( Time.deltaTime, 0.0f) * -Speed;
     }
 }
