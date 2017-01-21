@@ -37,28 +37,40 @@ public class WaveGenerator : MonoBehaviour {
     void Awake () {
         waveCollider = GetComponent<EdgeCollider2D>();
 
-        AddWave(WaveCollection.Waves[0]);
+        //AddWave(WaveCollection.Waves[0]);
 
-        for (int i = 0; i < 1024; ++i)
-        {
-            UpdateWave(1 / 60.0f);
-        }
+        //for (int i = 0; i < 1024; ++i)
+        //{
+        //    UpdateWave(1 / 60.0f);
+        //}
         //waveCollider.points = GenerateWaves(1024, WaveScale);
     }
 
     public float Height = 0.0f;
     public float Length = 0.0f;
 
-    void UpdateWave(float time)
+    void UpdateWaves(float time)
     {
         float step = time / WaveScale.x;
         float value = 0.0f;
 
+        List<WaveItem> toRemove = new List<WaveItem>();
+
         waves.ForEach(wave =>
         {
             wave.X += step;
-            value += wave.Function(wave.X);
+
+            if (wave.X > 1.0f)
+            {
+                toRemove.Add(wave);
+            }
+            else
+            {
+                value += wave.Function(wave.X);
+            }
         });
+
+        toRemove.ForEach(wave => waves.Remove(wave));
 
         Height = value * WaveScale.y;
         Length += time * Speed;
@@ -66,11 +78,18 @@ public class WaveGenerator : MonoBehaviour {
         points.Add(new Vector2(-Length, Height));
     }
 
+    System.Random rand = new System.Random();
+
+    public void AddWaveButtonClick()
+    {
+        Func<float, float> func = WaveCollection.Waves[rand.Next() % WaveCollection.Waves.Count];
+        AddWave(func);
+    }
 
 	// Update is called once per frame
 	void FixedUpdate () {
+        UpdateWaves(Time.deltaTime);
 
-        
         waveCollider.points = points.ToArray();
 
         transform.position = transform.position + new Vector3(Time.deltaTime * Speed, 0.0f, 0.0f);
