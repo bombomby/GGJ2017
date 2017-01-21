@@ -16,6 +16,8 @@ public class CloudInstance : MonoBehaviour {
     public static float MinScale = 0.1f;
     public static float MaxScale = 0.5f;
 
+    public float LifeTime = 20.0f;
+
     // Use this for initialization
     void Start () {
 
@@ -39,7 +41,7 @@ public class CloudInstance : MonoBehaviour {
         }
         
         // destroy after 10 seconds
-        Destroy(gameObject, 10);
+        Destroy(gameObject, LifeTime);
     }
 
     // Update is called once per frame
