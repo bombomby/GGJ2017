@@ -28,7 +28,7 @@ namespace Assets
         }
 
 
-        public ICollection<Func<float, float>> Waves;
+        public List<Func<float, float>> Waves;
         public WaveCollection ()
         {
             Waves = new List<Func<float, float>>();
