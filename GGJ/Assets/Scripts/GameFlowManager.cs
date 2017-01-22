@@ -34,6 +34,10 @@ public class GameFlowManager : MonoBehaviour
 
     public float Speed = -1.0f;
 
+    Vector3 initialPink;
+    Vector3 initialYellow;
+    Vector3 initialBoat;
+
 	// Use this for initialization
 	void Start ()
 	{
@@ -53,11 +57,26 @@ public class GameFlowManager : MonoBehaviour
 
 		m_scoreText = m_scoreToDisplay.GetComponent<Text>();
 		m_finalScoreText = m_finalScoreToDisplay.GetComponent<Text>();
-	}
+    }
+
+    private bool registered = false;
+
+    void StorePositions()
+    {
+        if (registered)
+        {
+            initialPink = m_playerPink.transform.localPosition;
+            initialYellow = m_playerYellow.transform.localPosition;
+            initialBoat = m_boat.transform.localPosition;
+            registered = true;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update ()
 	{
+        StorePositions();
+
 		switch (m_gameState)
 		{
 			case GameState.GS_MainMenu:		HandleMainMenuFlow();		break;
@@ -167,9 +186,14 @@ public class GameFlowManager : MonoBehaviour
 		m_playerYellow.SetActive(true);
 		m_boat.SetActive(true);
 
-		m_playerPink.transform.localPosition = new Vector3(-1.15f, 2.0f, 0.0f);
-		m_playerYellow.transform.localPosition = new Vector3(1.4f, 2.0f, 0.0f);
-		m_boat.transform.localPosition = new Vector3(-1.5f, 0.75f, 0.0f);
+        m_playerPink.transform.localPosition = new Vector3(1.96f, 0.39f, 0.0f);
+        m_playerYellow.transform.localPosition = new Vector3(-1.12f, 0.4f, 0.0f);
+        m_boat.transform.localPosition = new Vector3(0.53f, -0.59f, 0.0f);
+
+        //m_playerPink.transform.localPosition = initialPink;
+        //m_playerYellow.transform.localPosition = initialYellow;
+        //m_boat.transform.localPosition = initialBoat;
+
         m_boat.transform.rotation = new Quaternion();
     }
 }
