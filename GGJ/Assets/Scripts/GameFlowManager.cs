@@ -117,8 +117,8 @@ public class GameFlowManager : MonoBehaviour
 
 	private void HandleDeathFlow()
 	{
-		if (Input.GetKeyDown(KeyCode.Return))
-		{
+		if (CrossPlatformInputManager.GetButtonUp("A1") || CrossPlatformInputManager.GetButtonUp("A2"))
+        {
 			ResetGameAfterDeath();
 		}
 	}
