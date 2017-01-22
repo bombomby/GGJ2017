@@ -150,7 +150,7 @@ public class GameFlowManager : MonoBehaviour
 
 	private void HandleDeathFlow()
 	{
-		if (CrossPlatformInputManager.GetButtonUp("A1") || CrossPlatformInputManager.GetButtonUp("A2"))
+		if (CrossPlatformInputManager.GetButtonUp("A1") || CrossPlatformInputManager.GetButtonUp("A2") || Input.GetKeyDown(KeyCode.Space))
         {
 			ResetGameAfterDeath();
 		}
@@ -196,7 +196,7 @@ public class GameFlowManager : MonoBehaviour
 		m_playerYellow.SetActive(true);
 		m_boat.SetActive(true);
 
-        m_playerPink.transform.localPosition = new Vector3(1.96f, 1.25f, 0.0f);
+        m_playerPink.transform.localPosition = new Vector3(1.75f, 1.25f, 0.0f);
         m_playerYellow.transform.localPosition = new Vector3(-1.12f, 1.25f, 0.0f);
         m_boat.transform.localPosition = new Vector3(0.53f, -0.59f, 0.0f);
 

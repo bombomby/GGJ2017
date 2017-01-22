@@ -30,10 +30,18 @@ namespace UnityStandardAssets._2D
 				// Read the jump input in Update so button presses aren't missed.
 				m_Jump = CrossPlatformInputManager.GetButtonDown("Jump"+playerIndex);
 
+				if (playerIndex == 1)
+				{
+					m_Jump |= Input.GetKeyDown(KeyCode.W);
+				}
+				else
+				{
+					m_Jump |= Input.GetKeyDown(KeyCode.UpArrow);
+				}
+
 				// play sound
 				if (m_Jump && m_Character.IsGrounded())
 				{
-					Debug.Log("Bite");
 					m_AudioSource.clip = m_AudioClips[UnityEngine.Random.Range(0, 2)];
 					m_AudioSource.Play();
 				}
@@ -46,8 +54,24 @@ namespace UnityStandardAssets._2D
             // Read the inputs.
             bool crouch = Input.GetKey(KeyCode.LeftControl);
             float h = CrossPlatformInputManager.GetAxis("Horizontal" + playerIndex);
-            // Pass all parameters to the character control script.
-            m_Character.Move(h, crouch, m_Jump);
+
+			if (playerIndex == 1)
+			{
+				if (Input.GetKey(KeyCode.A))
+					h = -1;
+				if (Input.GetKey(KeyCode.D))
+					h = 1;
+			}
+			else
+			{
+				if (Input.GetKey(KeyCode.LeftArrow))
+					h = -1;
+				if (Input.GetKey(KeyCode.RightArrow))
+					h = 1;
+			}
+
+			// Pass all parameters to the character control script.
+			m_Character.Move(h, crouch, m_Jump);
             m_Jump = false;
 		}
     }
