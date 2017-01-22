@@ -169,7 +169,7 @@ public class GameFlowManager : MonoBehaviour
 
 		m_playerPink.transform.localPosition = new Vector3(-1.15f, 2.0f, 0.0f);
 		m_playerYellow.transform.localPosition = new Vector3(1.4f, 2.0f, 0.0f);
-		m_boat.transform.position = new Vector3(-1.5f, 0.75f, 0.0f);
+		m_boat.transform.localPosition = new Vector3(-1.5f, 0.75f, 0.0f);
         m_boat.transform.rotation = new Quaternion();
     }
 }
