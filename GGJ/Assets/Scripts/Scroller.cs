@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class Scroller : MonoBehaviour {
 
-    MainLoop Settings = null;
+    GameFlowManager Settings = null;
     public float SpeedScaler = 1.0f;
     
 	// Use this for initialization
 	void Start () {
         GameObject obj = GameObject.FindGameObjectWithTag("MainLoop");
-        Settings = obj.GetComponent<MainLoop>();
+        Settings = obj.GetComponent<GameFlowManager>();
     }
 
     // Update is called once per frame

@@ -32,6 +32,8 @@ public class GameFlowManager : MonoBehaviour
 
 	public float m_score = 0.0f;
 
+    public float Speed = 1.0f;
+
 	// Use this for initialization
 	void Start ()
 	{
