@@ -76,6 +76,9 @@ public class AudioManager_version2 : MonoBehaviour {
     /// <param name="value"></param>
     private void EnableEffects(int i, bool value)
     {
+        if (audioLowPassFilter_music == null || audioLowPassFilter_vfx == null)
+            return;
+
         switch(i)
         {
             case 0:
