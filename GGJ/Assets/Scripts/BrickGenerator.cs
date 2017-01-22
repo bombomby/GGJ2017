@@ -22,7 +22,8 @@ public class BrickGenerator : MonoBehaviour {
 
     public float BrickLiveTimeInSecs = 5.0f;
 
-    public float ImageSize = 50;
+    public float ImageSize = 35;
+    public float ImageOffset = 2;
 
     // private parameters
     private IDictionary<GameObject, float> LifeTimePerImage;
@@ -117,8 +118,8 @@ public class BrickGenerator : MonoBehaviour {
     /// <returns></returns>
     Vector2 CalculatePosition(int index)
     {
-        float pos_x = BrickCanvas.pixelRect.position.x + ImageSize;
-        float pos_y = BrickCanvas.pixelRect.position.y + index * ImageSize*2 + ImageSize;
+        float pos_x = BrickCanvas.pixelRect.position.x + ImageSize + ImageOffset;
+        float pos_y = BrickCanvas.pixelRect.position.y + index * (ImageSize + ImageOffset)*2 + ImageSize;
 
         return new Vector2(pos_x, pos_y);
     }
@@ -140,7 +141,7 @@ public class BrickGenerator : MonoBehaviour {
 
         image.GetComponent<RectTransform>().rect.Set (image.GetComponent<RectTransform>().rect.x,
                                                       image.GetComponent<RectTransform>().rect.y,
-                                                      ImageSize, ImageSize);
+                                                      ImageSize + ImageOffset, ImageSize + ImageOffset);
         
         switch (index)
         {

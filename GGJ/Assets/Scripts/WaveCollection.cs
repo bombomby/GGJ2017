@@ -20,7 +20,7 @@ namespace Assets
 
         public float WaveFunction_003(float x)
         {
-            return (float)(System.Math.Sin(x * System.Math.PI) / 7);
+            return (float)(System.Math.Sin(x * System.Math.PI));
         }
 
         public float WaveFunction_004(float x)

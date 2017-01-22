@@ -24,8 +24,9 @@ public class GameFlowManager : MonoBehaviour
 	private GameState m_gameState;
 
 	public GameObject m_imageToKillOnPlay;
+    public GameObject m_imageToKillOnPlay1;
 
-	public GameObject m_scoreToDisplay;
+    public GameObject m_scoreToDisplay;
 	public GameObject m_finalScoreToDisplay;
 	private Text m_scoreText;
 	private Text m_finalScoreText;
@@ -52,7 +53,8 @@ public class GameFlowManager : MonoBehaviour
 
 		//ensure the UI is setup when launching the game
 		m_imageToKillOnPlay.SetActive(true);
-		m_scoreToDisplay.SetActive(false);
+        m_imageToKillOnPlay1.SetActive(true);
+        m_scoreToDisplay.SetActive(false);
 		m_finalScoreToDisplay.SetActive(false);
 
 		m_scoreText = m_scoreToDisplay.GetComponent<Text>();
@@ -125,7 +127,8 @@ public class GameFlowManager : MonoBehaviour
 		if (IsUserInput())
 		{
 			m_imageToKillOnPlay.SetActive(false);
-			m_gameState = GameState.GS_Play;
+            m_imageToKillOnPlay1.SetActive(false);
+            m_gameState = GameState.GS_Play;
 			m_scoreToDisplay.SetActive(true);
 
 			// Play sound here
@@ -172,7 +175,8 @@ public class GameFlowManager : MonoBehaviour
 		m_finalScoreToDisplay.SetActive(false);
 
 		m_imageToKillOnPlay.SetActive(true);
-		m_gameState = GameState.GS_MainMenu;
+        m_imageToKillOnPlay1.SetActive(true);
+        m_gameState = GameState.GS_MainMenu;
 
 		InitCharactersAndBoat();
 	}
