@@ -69,6 +69,9 @@ public class GameFlowManager : MonoBehaviour
 		}
 	}
 
+	public bool IsPinkAlive() { return m_isPinkAlive; }
+	public bool IsYellowAlive() { return m_isYellowAlive; }
+
 	public void KillMrPink()
 	{
 		if (m_gameState != GameState.GS_Play)
