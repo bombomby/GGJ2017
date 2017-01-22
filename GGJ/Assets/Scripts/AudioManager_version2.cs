@@ -8,6 +8,9 @@ public class AudioManager_version2 : MonoBehaviour {
     public string Music = "Music";
     public string VFX = "VFX";
 
+    public float DistortionLevel = 1;
+    public AudioReverbPreset Reverb = AudioReverbPreset.Bathroom;
+
     // private parameters
     private AudioSource music;
     private AudioLowPassFilter audioLowPassFilter_music;
@@ -15,51 +18,17 @@ public class AudioManager_version2 : MonoBehaviour {
     private AudioDistortionFilter musicDistortionFilter_music;
     private AudioReverbFilter audioReverbFilter_music;
 
+    private AudioSource vfx;
     private AudioLowPassFilter audioLowPassFilter_vfx;
     private AudioHighPassFilter audioHighPassFilter_vfx;
     private AudioDistortionFilter musicDistortionFilter_vfx;
     private AudioReverbFilter audioReverbFilter_vfx;
 
-    private AudioSource vfx;
-
-    private List<Component> musicEffects;
-    private List<Component> vfxEffects;
-
-    private AudioDistortionFilter distortion;
+   
 
     // Use this for initialization
     void Start()
     {
-        // get Composents
-
-        var allComponents = gameObject.transform.GetComponentsInChildren(typeof(Component));
-
-        musicEffects = new List<Component>();
-        vfxEffects = new List<Component>();
-        /*
-        // gather all music components
-        foreach (var component in allComponents)
-        {
-            if(component.name.Equals(Music))
-            {
-                if(!(component is AudioSource) && !(component is Transform))
-                {
-
-
-                    musicEffects.Add(component);
-                }
-            }
-
-            if (component.name.Equals(VFX))
-            {
-                if (!(component is AudioSource) && !(component is Transform))
-                {
-                    vfxEffects.Add(component);
-                }
-            }
-        }
-        */
-
         // initialize nusic and vfx
         var audioSources = gameObject.transform.GetComponentsInChildren<AudioSource>();
         if(audioSources.Length >= 1)
@@ -69,10 +38,10 @@ public class AudioManager_version2 : MonoBehaviour {
             audioLowPassFilter_music = music.gameObject.AddComponent<AudioLowPassFilter>();
             audioHighPassFilter_music = music.gameObject.AddComponent<AudioHighPassFilter>();
             musicDistortionFilter_music = music.gameObject.AddComponent<AudioDistortionFilter>();
-            musicDistortionFilter_music.distortionLevel = 2;
+            musicDistortionFilter_music.distortionLevel = DistortionLevel;
 
             audioReverbFilter_music = music.gameObject.AddComponent<AudioReverbFilter>();
-            audioReverbFilter_music.reverbPreset = AudioReverbPreset.Bathroom;
+            audioReverbFilter_music.reverbPreset = Reverb;
         }
 
         if (audioSources.Length >= 2)
@@ -81,10 +50,10 @@ public class AudioManager_version2 : MonoBehaviour {
             audioLowPassFilter_vfx = vfx.gameObject.AddComponent<AudioLowPassFilter>();
             audioHighPassFilter_vfx = vfx.gameObject.AddComponent<AudioHighPassFilter>();
             musicDistortionFilter_vfx = vfx.gameObject.AddComponent<AudioDistortionFilter>();
-            musicDistortionFilter_vfx.distortionLevel = 2;
+            musicDistortionFilter_vfx.distortionLevel = DistortionLevel;
 
             audioReverbFilter_vfx = vfx.gameObject.AddComponent<AudioReverbFilter>();
-            audioReverbFilter_vfx.reverbPreset = AudioReverbPreset.Bathroom;
+            audioReverbFilter_vfx.reverbPreset = Reverb;
         }
 
         //disable all effects
@@ -146,66 +115,4 @@ public class AudioManager_version2 : MonoBehaviour {
             EnableEffects(i, true);
         }
     }
-    /*
-    /// <summary>
-    /// Get AudioClip
-    /// </summary>
-    /// <param name="index"></param>
-    /// <returns></returns>
-    private AudioClip GetCLip(int index)
-    {
-        switch (index)
-        {
-            case 0: return Audio_001;
-            case 1: return Audio_002;
-            case 2: return Audio_003;
-            case 3: return Audio_004;
-            default: return null;
-        }
-    }
-
-    /// <summary>
-    /// Loop
-    /// </summary>
-    public void Loops(bool value)
-    {
-        foreach (var source in AudioSources)
-        {
-            source.Value.loop = value;
-        }
-    }
-
-    public void DesacActivateAllBut(IList<int> indexes)
-    {
-        foreach (var source in AudioSources)
-        {
-            if (!indexes.Contains(source.Key))
-            {
-                source.Value.Stop();
-                source.Value.loop = false;
-            }
-        }
-    }
-
-    public void ActivateAudio(int index, bool value)
-    {
-        ActiveAudio[index] = value;
-        //AudioWeight[index] += value ? 1 : -1;
-
-        if (!AudioSources.ContainsKey(index))
-        {
-            //AudioSource source = new AudioSource();
-
-            //AudioSource source = Instantiate(new AudioSource(), transform.position, Quaternion.identity);
-
-            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            audioSource.clip = GetCLip(index);
-            audioSource.loop = true;
-
-            audioSource.transform.SetParent(transform);
-
-            AudioSources.Add(index, audioSource);
-        }
-    }
-    */
 }

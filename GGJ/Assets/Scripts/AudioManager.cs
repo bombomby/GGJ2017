@@ -16,7 +16,6 @@ public class AudioManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         ActiveAudio = new Dictionary<int, bool>();
-        //AudioWeight = new Dictionary<int, int>();
         AudioSources = new Dictionary<int, AudioSource>();
     }
 	
@@ -81,15 +80,8 @@ public class AudioManager : MonoBehaviour {
 
     public void ActivateAudio(int index, bool value)
     {
-        ActiveAudio[index] = value;
-        //AudioWeight[index] += value ? 1 : -1;
-
         if(!AudioSources.ContainsKey(index))
         {
-            //AudioSource source = new AudioSource();
-
-            //AudioSource source = Instantiate(new AudioSource(), transform.position, Quaternion.identity);
-
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
             audioSource.clip = GetCLip(index);
             audioSource.loop = true;
@@ -98,5 +90,7 @@ public class AudioManager : MonoBehaviour {
 
             AudioSources.Add(index, audioSource);
         }
+
+        ActiveAudio[index] = value;
     }
 }

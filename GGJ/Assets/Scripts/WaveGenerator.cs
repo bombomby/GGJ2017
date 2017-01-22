@@ -40,7 +40,10 @@ public class WaveGenerator : MonoBehaviour {
     List<Vector2> points = new List<Vector2>();
 
     WaveCollection WaveCollection = new WaveCollection();
+
+    public GameObject BrickScheduler;
     public GameObject BrickGenerator;
+
 
     WaveItem ambientWave = new WaveItem() { Function = WaveCollection.StandardWave, X = -2000.0f };
 
@@ -102,7 +105,8 @@ public class WaveGenerator : MonoBehaviour {
             BrickGenerator bg = BrickGenerator.GetComponent<BrickGenerator>();
             if(bg!=null)
             {
-                bg.Generate(index);
+                //bg.Generate(index);
+                bg.GenerateBrickInCanvas(index);
             }
         }
     }
@@ -116,5 +120,19 @@ public class WaveGenerator : MonoBehaviour {
 		Points = points;
 
 		transform.position = transform.position + new Vector3(Time.deltaTime * Speed, 0.0f, 0.0f);
+
+        if(null != BrickScheduler )
+        {
+            BrickScheduler scheduler = BrickScheduler.GetComponent<BrickScheduler>();
+            if (scheduler != null)
+            {
+                if (scheduler.GetNext() <= Time.realtimeSinceStartup)
+                {
+                    scheduler.Consume();
+                    AddWaveButtonClick();
+                }
+            }
+        }
+
     }
 }

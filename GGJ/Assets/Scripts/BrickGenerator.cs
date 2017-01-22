@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BrickGenerator : MonoBehaviour {
 
@@ -9,26 +10,38 @@ public class BrickGenerator : MonoBehaviour {
     public GameObject Prefab_002;
     public GameObject Prefab_003;
     public GameObject Prefab_004;
+
+    public Image Image_brick_001;
+    public Image Image_brick_002;
+    public Image Image_brick_003;
+    public Image Image_brick_004;
+    
     public GameObject AudioGeneratorObject;
     public GameObject AudioGeneratorObject_version2;
+    public Canvas BrickCanvas;
 
     public float BrickLiveTimeInSecs = 5.0f;
 
-    // private parameters
-    private IDictionary<GameObject, float> LifeTimePerCube;
-    private IDictionary<GameObject, int> IndexPerCube;
+    public float ImageSize = 50;
 
+    // private parameters
+    private IDictionary<GameObject, float> LifeTimePerImage;
+    private IDictionary<GameObject, int> IndexPerBrick;
+    private IList<GameObject> Bricks;
+    
     // Use this for initialization
     void Start () {
-        LifeTimePerCube = new Dictionary<GameObject, float>();
-        IndexPerCube = new Dictionary<GameObject, int>();
+        LifeTimePerImage = new Dictionary<GameObject, float>();
+        IndexPerBrick = new Dictionary<GameObject, int>();
+        Bricks = new List<GameObject>();
     }
 	
 	// Update is called once per frame
 	void Update () {
+
         // check what needs to be destroyd
         List<GameObject> destroyList = new List<GameObject>();
-        foreach(var current in LifeTimePerCube)
+        foreach(var current in LifeTimePerImage)
         {
             if (Time.time > current.Value)
             {
@@ -39,25 +52,33 @@ public class BrickGenerator : MonoBehaviour {
         // destroy stuff
         foreach (var obj in destroyList)
         {
-            LifeTimePerCube.Remove(obj);
-            IndexPerCube.Remove(obj);
+            LifeTimePerImage.Remove(obj);
+            Bricks.Remove(obj);
             Destroy(obj);
         }
 
         // update positions
-        for(int child=0; child<transform.childCount; child++)
+        for (int idx = 0; idx < Bricks.Count; idx++)
         {
-            transform.GetChild(child).transform.position = new Vector3(transform.position.x, transform.position.y + child, transform.position.z);
+            if (null == Bricks[idx]) continue;
+
+            Bricks[idx].GetComponent<RectTransform>().position = CalculatePosition(idx);
         }
 
         // trigger destroy of the for bottom cubes
-        for (int child = 0; child < transform.childCount && child < 4 ; child++)
+        for (int idx = 0; idx < Bricks.Count && idx < 4; idx++)
         {
-            GameObject obj = transform.GetChild(child).gameObject;
-            if(!LifeTimePerCube.ContainsKey(obj))
+            if (!LifeTimePerImage.ContainsKey(Bricks[idx]))
             {
-                LifeTimePerCube.Add(obj, Time.realtimeSinceStartup + BrickLiveTimeInSecs);
+                LifeTimePerImage.Add(Bricks[idx], Time.realtimeSinceStartup + BrickLiveTimeInSecs);
             }
+        }
+
+        // get active indexes
+        IList<int> actives = new List<int>();
+        for (int idx = 0; idx < Bricks.Count && idx < 4; idx++)
+        {
+            if(IndexPerBrick.ContainsKey(Bricks[idx])) { actives.Add(IndexPerBrick[Bricks[idx]]); }
         }
 
         // update audio
@@ -65,78 +86,78 @@ public class BrickGenerator : MonoBehaviour {
         if (AudioGeneratorObject != null)
         {
             AudioManager ag = AudioGeneratorObject.GetComponent<AudioManager>();
-            if (ag != null)
-            {
+            if (ag != null) { 
                 // end all loops
                 ag.Loops(false);
-
-                IList<int> actives = new List<int>();
-                for (int child = 0; child < transform.childCount && child < 4; child++)
-                {
-                    GameObject obj = transform.GetChild(child).gameObject;
-                    if(obj!=null)
-                    {
-                        ag.ActivateAudio(IndexPerCube[obj], true);
-                        actives.Add(IndexPerCube[obj]);
-                    }
+                foreach (int index in actives) {
+                    ag.ActivateAudio(index, true);
                 }
-
                 ag.DesacActivateAllBut(actives);
             }
         }
 
+        // update effects
         if(AudioGeneratorObject_version2)
         {
             AudioManager_version2 ag = AudioGeneratorObject_version2.GetComponent<AudioManager_version2>();
             if (ag != null)
             {
-                IList<int> actives = new List<int>();
-                for (int child = 0; child < transform.childCount && child < 4; child++)
-                {
-                    GameObject obj = transform.GetChild(child).gameObject;
-                    if (obj != null)
-                    {
-                        actives.Add(IndexPerCube[obj]);
-                    }
-                }
-
                 ag.ActivateEffects(actives);
             }
         }
     }
 
-    public void Generate(int index)
+    /// <summary>
+    /// Calculate Positon
+    /// </summary>
+    /// <param name="index"></param>
+    /// <returns></returns>
+    Vector2 CalculatePosition(int index)
     {
-        GameObject cube = null;
-        Vector3 pos = new Vector3(transform.position.x, transform.position.y + transform.childCount, transform.position.z);
+        float pos_x = BrickCanvas.pixelRect.position.x + ImageSize;
+        float pos_y = BrickCanvas.pixelRect.position.y + index * ImageSize*2 + ImageSize;
+
+        return new Vector2(pos_x, pos_y);
+    }
+
+    /// <summary>
+    /// Generates a brick in the canvas system
+    /// </summary>
+    /// <param name="index"></param>
+    public void GenerateBrickInCanvas (int index)
+    {
+        // security check
+        if (BrickCanvas == null) return;
+
+
+        GameObject image = new GameObject();
+        image.AddComponent<RectTransform>();
+        image.transform.SetParent(BrickCanvas.transform);
+        image.GetComponent<RectTransform>().position = CalculatePosition(BrickCanvas.transform.childCount);
+
+        image.GetComponent<RectTransform>().rect.Set (image.GetComponent<RectTransform>().rect.x,
+                                                      image.GetComponent<RectTransform>().rect.y,
+                                                      ImageSize, ImageSize);
+        
         switch (index)
         {
             case 0:
-                if(Prefab_001!= null) { cube= Instantiate(Prefab_001, pos, Quaternion.identity); }
+                image.AddComponent<Image>().sprite = Image_brick_001.sprite;
                 break;
-           case 1:
-                if (Prefab_002 != null) { cube = Instantiate(Prefab_002, pos, Quaternion.identity); }
+            case 1:
+                image.AddComponent<Image>().sprite = Image_brick_002.sprite;
                 break;
-           case 2:
-                if (Prefab_003 != null) { cube = Instantiate(Prefab_003, pos, Quaternion.identity); }
+            case 2:
+                image.AddComponent<Image>().sprite = Image_brick_003.sprite;
                 break;
-           case 3:
-                if (Prefab_004 != null) { cube = Instantiate(Prefab_004, pos, Quaternion.identity); }
+            case 3:
+                image.AddComponent<Image>().sprite = Image_brick_004.sprite;
                 break;
             default:
-                cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = pos;
                 break;
         }
-        if(cube == null)
-        {
-            cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = pos;
-        }
-
-        cube.transform.SetParent(transform);
-
-        // same data in dictionaries
-        IndexPerCube.Add(cube, index);
+        Bricks.Add(image);
+        IndexPerBrick.Add(image, index);
+        image.layer = Bricks.Count;
     }
 }
