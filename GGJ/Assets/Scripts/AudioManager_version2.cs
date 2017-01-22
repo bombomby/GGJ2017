@@ -35,12 +35,12 @@ public class AudioManager_version2 : MonoBehaviour {
         {
             music = audioSources[0];
 
-            audioLowPassFilter_music = music.gameObject.AddComponent<AudioLowPassFilter>();
-            audioHighPassFilter_music = music.gameObject.AddComponent<AudioHighPassFilter>();
-            musicDistortionFilter_music = music.gameObject.AddComponent<AudioDistortionFilter>();
+            audioLowPassFilter_music = music.gameObject.GetComponent<AudioLowPassFilter>();
+            audioHighPassFilter_music = music.gameObject.GetComponent<AudioHighPassFilter>();
+            musicDistortionFilter_music = music.gameObject.GetComponent<AudioDistortionFilter>();
             musicDistortionFilter_music.distortionLevel = DistortionLevel;
 
-            audioReverbFilter_music = music.gameObject.AddComponent<AudioReverbFilter>();
+            audioReverbFilter_music = music.gameObject.GetComponent<AudioReverbFilter>();
             audioReverbFilter_music.reverbPreset = Reverb;
         }
 
@@ -87,7 +87,7 @@ public class AudioManager_version2 : MonoBehaviour {
                 audioHighPassFilter_vfx.enabled = value;
                 break;
             case 2:
-                musicDistortionFilter_music.enabled = value;
+                musicDistortionFilter_music.enabled = false;
                 musicDistortionFilter_vfx.enabled = value;
                 break;
             case 3:

@@ -78,7 +78,10 @@ public class BrickGenerator : MonoBehaviour {
         IList<int> actives = new List<int>();
         for (int idx = 0; idx < Bricks.Count && idx < 4; idx++)
         {
-            if(IndexPerBrick.ContainsKey(Bricks[idx])) { actives.Add(IndexPerBrick[Bricks[idx]]); }
+            if(IndexPerBrick.ContainsKey(Bricks[idx]))
+            {
+                actives.Add(IndexPerBrick[Bricks[idx]]);
+            }
         }
 
         // update audio
