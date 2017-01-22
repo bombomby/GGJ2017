@@ -35,10 +35,13 @@ public class BrickGenerator : MonoBehaviour {
         LifeTimePerImage = new Dictionary<GameObject, float>();
         IndexPerBrick = new Dictionary<GameObject, int>();
         Bricks = new List<GameObject>();
+
+        GameObject obj = GameObject.FindGameObjectWithTag("MainLoop");
+        manager = obj.GetComponent<GameFlowManager>();
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update () {
 
         // check what needs to be destroyd
         List<GameObject> destroyList = new List<GameObject>();
@@ -124,6 +127,8 @@ public class BrickGenerator : MonoBehaviour {
         return new Vector2(pos_x, pos_y);
     }
 
+    GameFlowManager manager;
+
     /// <summary>
     /// Generates a brick in the canvas system
     /// </summary>
@@ -132,6 +137,9 @@ public class BrickGenerator : MonoBehaviour {
     {
         // security check
         if (BrickCanvas == null) return;
+
+        if (manager.GetGameState() != GameFlowManager.GameState.GS_Play)
+            return;
 
 
         GameObject image = new GameObject();

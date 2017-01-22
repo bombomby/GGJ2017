@@ -16,7 +16,7 @@ public class CloudInstance : MonoBehaviour {
     public static float MinScale = 0.1f;
     public static float MaxScale = 0.5f;
 
-    public float LifeTime = 20.0f;
+    public float LifeTime = 60.0f;
 
     // Use this for initialization
     void Start () {
@@ -27,17 +27,17 @@ public class CloudInstance : MonoBehaviour {
         if (transform.localScale.x < scaleInterval/3.0f)
         {
             Speed = Random.Range(MinCloseSpeed, MaxCloseSpeed);
-            sr.sortingOrder = -2;
+            sr.sortingOrder = -12;
         }
         else if (transform.localScale.x > 2.0f * scaleInterval / 3.0f)
         {
             Speed = Random.Range(MinFarSpeed, MaxFarSpeed);
-            sr.sortingOrder = -4;
+            sr.sortingOrder = -14;
         }
         else
         {
             Speed = Random.Range(MinMediumSpeed, MaxMediumSpeed);
-            sr.sortingOrder = -3;
+            sr.sortingOrder = -13;
         }
 
         // destroy after 10 seconds

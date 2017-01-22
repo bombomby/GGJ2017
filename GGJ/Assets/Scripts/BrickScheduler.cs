@@ -7,9 +7,14 @@ public class BrickScheduler : MonoBehaviour {
 
     public Queue<float> Events;
 
+    GameFlowManager manager;
+
     // Use this for initialization
     void Start()
     {
+        GameObject obj = GameObject.FindGameObjectWithTag("MainLoop");
+        manager = obj.GetComponent<GameFlowManager>();
+
         Events = new Queue<float>();
         GenerateEvents();
     }
@@ -39,9 +44,12 @@ public class BrickScheduler : MonoBehaviour {
 
     private void GenerateEvents ()
     {
-        for(int i=0; i<30; i++)
+        if (manager.GetGameState() == GameFlowManager.GameState.GS_Play)
         {
-            Events.Enqueue(  Time.realtimeSinceStartup + i*3.0f);
+            for (int i = 0; i < 30; i++)
+            {
+                Events.Enqueue(Time.realtimeSinceStartup + i * 3.0f);
+            }
         }
     }
 }

@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class WaveGenerator : MonoBehaviour {
 
+    GameFlowManager gameFlowManager;
+
     class WaveItem
     {
         public Func<float, float> Function;
@@ -37,6 +39,11 @@ public class WaveGenerator : MonoBehaviour {
     public Vector2 WaveScale = new Vector2(1, 1);
     public float Speed = 1.0f;
 
+    float GetSpeed()
+    {
+        return Speed * gameFlowManager.Speed;
+    }
+
     List<Vector2> points = new List<Vector2>();
 
     WaveCollection WaveCollection = new WaveCollection();
@@ -56,8 +63,22 @@ public class WaveGenerator : MonoBehaviour {
         points.Add(new Vector2(60.0f, 0.0f));
     }
 
+    private void Start()
+    {
+        GameObject obj = GameObject.FindGameObjectWithTag("MainLoop");
+        gameFlowManager = obj.GetComponent<GameFlowManager>();
+    }
+
     public float Height = 0.0f;
     public float Length = 0.0f;
+
+    float GetDificultyMultiplier()
+    {
+        if (gameFlowManager.GetGameState() != GameFlowManager.GameState.GS_Play)
+            return 1.0f;
+
+        return 1.0f + gameFlowManager.m_score / 20.0f;
+    }
 
     void UpdateWaves(float time)
     {
@@ -83,8 +104,8 @@ public class WaveGenerator : MonoBehaviour {
         value += ambientWave.Update(step);
 
 
-        Height = value * WaveScale.y;
-        Length += time * Speed;
+        Height = value * WaveScale.y * GetDificultyMultiplier();
+        Length += time * GetSpeed();
 
         if (points.Count > MaxPoints)
             points.RemoveAt(0);
@@ -119,7 +140,7 @@ public class WaveGenerator : MonoBehaviour {
 		waveCollider.points = points.ToArray();
 		Points = points;
 
-		transform.position = transform.position + new Vector3(Time.deltaTime * Speed, 0.0f, 0.0f);
+		transform.position = transform.position + new Vector3(Time.deltaTime * GetSpeed(), 0.0f, 0.0f);
 
         if(null != BrickScheduler )
         {

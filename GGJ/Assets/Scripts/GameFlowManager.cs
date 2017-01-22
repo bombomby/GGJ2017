@@ -14,6 +14,8 @@ public class GameFlowManager : MonoBehaviour
 		GS_Credits
 	}
 
+    public Transform BoatModel;
+
 	public GameObject m_playerPink;
 	public GameObject m_playerYellow;
 	public GameObject m_boat;
@@ -22,6 +24,10 @@ public class GameFlowManager : MonoBehaviour
 	private bool m_isYellowAlive;
 
 	private GameState m_gameState;
+    public GameState GetGameState()
+    {
+        return m_gameState;
+    }
 
 	public GameObject m_imageToKillOnPlay;
     public GameObject m_imageToKillOnPlay1;
@@ -33,7 +39,7 @@ public class GameFlowManager : MonoBehaviour
 
 	public float m_score = 0.0f;
 
-    public float Speed = -1.0f;
+    public float Speed = 1.0f;
 
     Vector3 initialPink;
     Vector3 initialYellow;
@@ -140,7 +146,7 @@ public class GameFlowManager : MonoBehaviour
 		// handle the timer/score
 		m_score += Time.deltaTime;
 		m_scoreText.text = "Score:" + m_score.ToString();
-	}
+    }
 
 	private void HandleDeathFlow()
 	{
@@ -190,9 +196,20 @@ public class GameFlowManager : MonoBehaviour
 		m_playerYellow.SetActive(true);
 		m_boat.SetActive(true);
 
-        m_playerPink.transform.localPosition = new Vector3(1.96f, 0.39f, 0.0f);
-        m_playerYellow.transform.localPosition = new Vector3(-1.12f, 0.4f, 0.0f);
+        m_playerPink.transform.localPosition = new Vector3(1.96f, 1.25f, 0.0f);
+        m_playerYellow.transform.localPosition = new Vector3(-1.12f, 1.25f, 0.0f);
         m_boat.transform.localPosition = new Vector3(0.53f, -0.59f, 0.0f);
+
+        Rigidbody2D body = m_boat.GetComponent<Rigidbody2D>();
+        body.velocity = Vector2.zero;
+        body.angularVelocity = 0.0f;
+
+        var rigidbodies = gameObject.GetComponentsInChildren<Rigidbody2D>(m_boat);
+        foreach (Rigidbody2D rb in rigidbodies)
+        {
+            rb.velocity = Vector2.zero;
+            rb.angularVelocity = 0.0f;
+        }
 
         //m_playerPink.transform.localPosition = initialPink;
         //m_playerYellow.transform.localPosition = initialYellow;

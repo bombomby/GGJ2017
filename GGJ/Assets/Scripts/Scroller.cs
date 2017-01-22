@@ -5,7 +5,7 @@ using UnityEngine;
 public class Scroller : MonoBehaviour {
 
     GameFlowManager Settings = null;
-    public float SpeedScaler = 1.0f;
+    public float SpeedScaler = 2.0f;
     
 	// Use this for initialization
 	void Start () {
